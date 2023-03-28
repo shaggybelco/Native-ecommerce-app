@@ -1,0 +1,7 @@
+{
+  "name": "Buyer",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
