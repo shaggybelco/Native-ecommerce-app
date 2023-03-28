@@ -10,7 +10,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { diamondOutline, manOutline, tvOutline, womanOutline } from 'ionicons/icons';
+import { diamondOutline, homeOutline, manOutline, tvOutline, womanOutline } from 'ionicons/icons';
 import Electronics from './pages/Electronics';
 import Jewelery from './pages/Jewelery';
 import Man from './pages/Man';
@@ -34,6 +34,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import Home from './pages/Home';
 
 setupIonicReact();
 
@@ -54,11 +55,18 @@ const App: React.FC = () => (
           <Route path="/woman">
             <Woman />
           </Route>
+          <Route path="/home">
+            <Home />
+          </Route>
           <Route exact path="/">
-            <Redirect to="/electronics" />
+            <Redirect to="/home" />
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
+        <IonTabButton tab="Home" href="/home">
+            <IonIcon aria-hidden="true" icon={homeOutline} />
+            <IonLabel>Home</IonLabel>
+          </IonTabButton>
           <IonTabButton tab="Electronics" href="/electronics">
             <IonIcon aria-hidden="true" icon={tvOutline} />
             <IonLabel>Electronics</IonLabel>
