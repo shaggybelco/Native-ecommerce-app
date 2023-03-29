@@ -23,13 +23,13 @@ const Carousel: React.FC<CarouselProps> = ({ products }) => {
     return (
         <div style={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <img src={products[currentSlide]?.image} alt={`Slide ${currentSlide}`} style={{ width: 'auto', height: '200px', objectFit: 'cover' }} />
-            <IonButton onClick={handlePrev} style={{ position: 'absolute', top: '50%', left: 0, transform: 'translateY(-50%)', zIndex: 1 }}>
+            <IonButton fill='clear' onClick={handlePrev} style={{ position: 'absolute', top: '50%', left: 0, transform: 'translateY(-50%)', zIndex: 1 }}>
                 <IonIcon icon={chevronBack} />
             </IonButton>
-            <IonButton onClick={handleNext} style={{ position: 'absolute', top: '50%', right: 0, transform: 'translateY(-50%)', zIndex: 1 }}>
+            <IonButton fill='clear' onClick={handleNext} style={{ position: 'absolute', top: '50%', right: 0, transform: 'translateY(-50%)', zIndex: 1 }}>
                 <IonIcon icon={chevronForward} />
             </IonButton>
-            <IonButton style={{ position: 'absolute', top: '90%', right: '40%', transform: 'translateY(-50%)', zIndex: 1 }}>
+            <IonButton fill='clear' style={{ position: 'absolute', top: '0%', right: '0%', transform: 'translateY(-50%)', zIndex: 1 }}>
                 <IonIcon icon={bagAddOutline} />
             </IonButton>
         </div>
