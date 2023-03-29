@@ -16,37 +16,17 @@ import { cartOutline, personOutline } from 'ionicons/icons';
 import Carousel from '../components/Carousel';
 import './Home.scss'
 import { MyContext } from '../context/data.context';
+import Toolbar from '../components/Toolbar';
+import Menu from '../components/Menu';
 
 const Home: React.FC = () => {
     const { electronics, jewelery, man, woman } = useContext(MyContext)
 
     return (
         <>
-            <IonMenu contentId="main-content">
-                <IonHeader>
-                    <IonToolbar>
-                        <IonTitle>Menu Content</IonTitle>
-                    </IonToolbar>
-                </IonHeader>
-                <IonContent className="ion-padding">This is the menu content.</IonContent>
-            </IonMenu>
-            <IonPage id="main-content">
-                <IonHeader>
-                    <IonToolbar>
-                        <IonButtons slot="start">
-                            <IonMenuButton></IonMenuButton>
-                        </IonButtons>
-                        <IonButtons slot="end">
-                            <IonButton>
-                                <IonIcon icon={cartOutline} />
-                            </IonButton>
-                            <IonButton>
-                                <IonIcon icon={personOutline} />
-                            </IonButton>
-                        </IonButtons>
-                        <IonTitle>Home</IonTitle>
-                    </IonToolbar>
-                </IonHeader>
+            <Menu />
+            <IonPage id='main-content'>
+                <Toolbar text={'Home'} />
                 <IonContent className="ion-padding">
                     <div className='flex flex-row align-center space-between mb-1'>
                         <h2>Electronics</h2>
