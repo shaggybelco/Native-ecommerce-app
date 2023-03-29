@@ -1,10 +1,14 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
+import { useContext } from 'react';
 import Menu from '../components/Menu';
+import ProductCard from '../components/productCard';
 import Toolbar from '../components/Toolbar';
+import { MyContext } from '../context/data.context';
 import './Man.css';
 
 const Man: React.FC = () => {
+  const {man} = useContext(MyContext);
+
   return (
     <>
       <Menu />
@@ -16,7 +20,10 @@ const Man: React.FC = () => {
               <IonTitle size="large">Tab 3</IonTitle>
             </IonToolbar>
           </IonHeader>
-          <ExploreContainer name="Tab 3 page" />
+          {man.map((product, index) => {
+            return <ProductCard key={index} title={product.title} image={product.image} price={product.price} id={product.id} category={product.category} description={product.description} />
+          })
+          }
         </IonContent>
       </IonPage>
     </>

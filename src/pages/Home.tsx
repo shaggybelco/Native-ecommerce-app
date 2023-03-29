@@ -1,18 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import {
-    IonButton,
-    IonButtons,
     IonChip,
     IonContent,
-    IonHeader,
-    IonIcon,
-    IonMenu,
-    IonMenuButton,
-    IonPage,
-    IonTitle,
-    IonToolbar
-} from '@ionic/react';
-import { cartOutline, personOutline } from 'ionicons/icons';
+    IonPage} from '@ionic/react';
 import Carousel from '../components/Carousel';
 import './Home.scss'
 import { MyContext } from '../context/data.context';

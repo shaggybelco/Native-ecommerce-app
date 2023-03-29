@@ -1,10 +1,13 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
+import { useContext } from 'react';
 import Menu from '../components/Menu';
+import ProductCard from '../components/productCard';
 import Toolbar from '../components/Toolbar';
+import { MyContext } from '../context/data.context';
 import './Jewelery.css';
 
-const jewelery: React.FC = () => {
+const Jewelery: React.FC = () => {
+  const { jewelery } = useContext(MyContext);
   return (
     <>
       <Menu />
@@ -16,11 +19,14 @@ const jewelery: React.FC = () => {
               <IonTitle size="large">Tab 2</IonTitle>
             </IonToolbar>
           </IonHeader>
-          <ExploreContainer name="Tab 2 page" />
+          {jewelery.map((product, index) => {
+            return <ProductCard key={index} title={product.title} image={product.image} price={product.price} id={product.id} category={product.category} description={product.description} />
+          })
+          }
         </IonContent>
       </IonPage>
     </>
   );
 };
 
-export default jewelery;
+export default Jewelery;

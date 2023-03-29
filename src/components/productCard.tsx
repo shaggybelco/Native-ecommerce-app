@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/react';
+import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/react';
 import { IProduct } from '../Interface/IProduct';
 
 const ProductCard: React.FC<IProduct> = ({ title, image, price }) => {
