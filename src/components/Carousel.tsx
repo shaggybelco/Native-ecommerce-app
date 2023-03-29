@@ -1,37 +1,34 @@
 import React, { useState } from 'react';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import { IProduct } from '../Interface/IProduct';
 
 interface CarouselProps {
-  images: IProduct[];
+    products: IProduct[];
 }
 
-const Carousel: React.FC<CarouselProps> = ({ images }) => {
-  const [activeSlide, setActiveSlide] = useState(0);
+const Carousel: React.FC<CarouselProps> = ({ products }) => {
+    const [currentSlide, setCurrentSlide] = useState(0);
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    afterChange: (index: number) => setActiveSlide(index),
-  };
+    const handleNext = () => {
+        const nextSlide = currentSlide + 1;
+        setCurrentSlide(nextSlide >= products.length ? 0 : nextSlide);
+    };
 
-  return (
-    <div>
-      <Slider {...settings}>
-        {images.map((image, index) => (
-          <div key={index}>
-            <img src={image.image} alt={`Slide ${index}`} />
-          </div>
-        ))}
-      </Slider>
-      <p>Active Slide: {activeSlide + 1}</p>
-    </div>
-  );
+    const handlePrev = () => {
+        const prevSlide = currentSlide - 1;
+        setCurrentSlide(prevSlide < 0 ? products.length - 1 : prevSlide);
+    };
+
+    return (
+        <div style={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <img src={products[currentSlide]?.image} alt={`Slide ${currentSlide}`} style={{ width: 'auto', height: '200px', objectFit: 'cover' }} />
+            <button onClick={handlePrev} style={{ position: 'absolute', top: '50%', left: 0, transform: 'translateY(-50%)', zIndex: 1 }}>
+                Prev
+            </button>
+            <button onClick={handleNext} style={{ position: 'absolute', top: '50%', right: 0, transform: 'translateY(-50%)', zIndex: 1 }}>
+                Next
+            </button>
+        </div>
+    );
 };
 
 export default Carousel;

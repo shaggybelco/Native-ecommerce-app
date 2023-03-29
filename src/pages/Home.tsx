@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
     IonButton,
     IonButtons,
+    IonChip,
     IonContent,
     IonHeader,
     IonIcon,
@@ -13,20 +14,12 @@ import {
 } from '@ionic/react';
 import { cartOutline, personOutline } from 'ionicons/icons';
 import Carousel from '../components/Carousel';
-import { getProducts } from '../services/Products';
-import { IProduct } from '../Interface/IProduct';
+import './Home.scss'
+import { MyContext } from '../context/data.context';
 
 const Home: React.FC = () => {
-    const [products, setProducts] = useState<IProduct[]>([]);
+    const { electronics, jewelery, man, woman } = useContext(MyContext)
 
-  
-  useEffect(() => {
-    getProducts('electronics').then((products) => {
-      console.log(products);
-      setProducts(products);
-    })
-  }, []);
-  
     return (
         <>
             <IonMenu contentId="main-content">
@@ -55,7 +48,26 @@ const Home: React.FC = () => {
                     </IonToolbar>
                 </IonHeader>
                 <IonContent className="ion-padding">
-                    {/* <Carousel images={products} /> */}
+                    <div className='flex flex-row align-center space-between mb-1'>
+                        <h2>Electronics</h2>
+                        <IonChip className='flex'>See more</IonChip>
+                    </div>
+                    <Carousel products={electronics} />
+                    <div className='flex flex-row align-center space-between mb-1'>
+                        <h2>Jewelery</h2>
+                        <IonChip className='flex'>See more</IonChip>
+                    </div>
+                    <Carousel products={jewelery} />
+                    <div className='flex flex-row align-center space-between mb-1'>
+                        <h2>Men's clothing</h2>
+                        <IonChip className='flex'>See more</IonChip>
+                    </div>
+                    <Carousel products={man} />
+                    <div className='flex flex-row align-center space-between mb-1'>
+                        <h2>Women's clothing</h2>
+                        <IonChip className='flex'>See more</IonChip>
+                    </div>
+                    <Carousel products={woman} />
                 </IonContent>
             </IonPage>
         </>

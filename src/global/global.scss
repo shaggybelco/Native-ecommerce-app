@@ -1,0 +1,31 @@
+.flex{
+    display: flex;
+}
+
+.flex-row{
+    flex-direction: row;
+}
+
+.justify-center{
+    justify-content: center;
+}
+
+.align-center{
+    align-items: center;
+}
+
+.justify-end{
+    justify-content: end;
+}
+
+.space-between{
+    justify-content: space-between;
+}
+
+.mt-1{
+    margin-top: 1rem;
+}
+
+.mb-1{
+    margin-bottom: 1rem;
+}

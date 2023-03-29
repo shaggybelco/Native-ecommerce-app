@@ -14,7 +14,6 @@ import { diamondOutline, homeOutline, manOutline, tvOutline, womanOutline } from
 import Electronics from './pages/Electronics';
 import Jewelery from './pages/Jewelery';
 import Man from './pages/Man';
-import Woman from './pages/Woman';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -33,60 +32,97 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 /* Theme variables */
+import './global/global.scss'
 import './theme/variables.css';
 import Home from './pages/Home';
+import { MyContext } from './context/data.context';
+import { useState, useEffect } from 'react';
+import { IProduct } from './Interface/IProduct';
+import { getProducts } from './services/Products';
+import Woman from './pages/Woman';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/electronics">
-            <Electronics />
-          </Route>
-          <Route exact path="/jewelery">
-            <Jewelery />
-          </Route>
-          <Route path="/man">
-            <Man />
-          </Route>
-          <Route path="/woman">
-            <Woman />
-          </Route>
-          <Route path="/home">
-            <Home />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/home" />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-        <IonTabButton tab="Home" href="/home">
-            <IonIcon aria-hidden="true" icon={homeOutline} />
-            <IonLabel>Home</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="Electronics" href="/electronics">
-            <IonIcon aria-hidden="true" icon={tvOutline} />
-            <IonLabel>Electronics</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="Jewelery" href="/jewelery">
-            <IonIcon aria-hidden="true" icon={diamondOutline} />
-            <IonLabel>Jewelery</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="Man" href="/man">
-            <IonIcon aria-hidden="true" icon={manOutline} />
-            <IonLabel>Man</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="Woman" href="/woman">
-            <IonIcon aria-hidden="true" icon={womanOutline} />
-            <IonLabel>Woman</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
-);
+const App: React.FC = () => {
+  const [electronics, setElectronics] = useState<IProduct[]>([]);
+  const [jewelery, setJewelery] = useState<IProduct[]>([]);
+  const [man, setMan] = useState<IProduct[]>([]);
+  const [woman, setWoman] = useState<IProduct[]>([]);
+
+  useEffect(() => {
+      getProducts('electronics').then((products) => {
+          console.log(products);
+          setElectronics(products);
+      });
+
+      getProducts('jewelery').then((products) => {
+          console.log(products);
+          setJewelery(products);
+      });
+
+      getProducts("men's clothing").then((products) => {
+          console.log(products);
+          setMan(products);
+      });
+
+      getProducts("women's clothing").then((products) => {
+          console.log(products);
+          setWoman(products);
+      });
+  }, []);
+  return (
+    <IonApp>
+      <MyContext.Provider value={{electronics, jewelery, man, woman, setElectronics, setJewelery, setMan, setWoman}}>
+      <IonReactRouter>
+        <IonTabs>
+            <IonRouterOutlet>
+              <Route exact path="/electronics">
+                <Electronics />
+              </Route>
+              <Route exact path="/jewelery">
+                <Jewelery />
+              </Route>
+              <Route path="/man">
+                <Man />
+              </Route>
+              <Route path="/woman">
+                <Woman />
+              </Route>
+              <Route path="/home">
+                <Home />
+              </Route>
+              <Route exact path="/">
+                <Redirect to="/home" />
+              </Route>
+            </IonRouterOutlet>
+          
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="Home" href="/home">
+              <IonIcon aria-hidden="true" icon={homeOutline} />
+              <IonLabel>Home</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="Electronics" href="/electronics">
+              <IonIcon aria-hidden="true" icon={tvOutline} />
+              <IonLabel>Electronics</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="Jewelery" href="/jewelery">
+              <IonIcon aria-hidden="true" icon={diamondOutline} />
+              <IonLabel>Jewelery</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="Man" href="/man">
+              <IonIcon aria-hidden="true" icon={manOutline} />
+              <IonLabel>Men's</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="Woman" href="/woman">
+              <IonIcon aria-hidden="true" icon={womanOutline} />
+              <IonLabel>Women's</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+      </MyContext.Provider>
+    </IonApp>
+  );
+}
 
 export default App;
