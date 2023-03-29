@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import { useContext } from 'react';
 import Menu from '../components/Menu';
 import ProductCard from '../components/productCard';
@@ -20,10 +20,15 @@ const Electronics: React.FC = () => {
               <IonTitle size="large">Electronics</IonTitle>
             </IonToolbar>
           </IonHeader>
-          {electronics.map((product, index) => {
-            return <ProductCard key={index} title={product.title} image={product.image} price={product.price} id={product.id} category={product.category} description={product.description} />
-          })
-          }
+          <IonGrid className='mb-1'>
+            <IonRow>
+              {electronics.map((product, index) => {
+
+                return <ProductCard key={index} title={product.title} image={product.image} price={product.price} id={product.id} category={product.category} description={product.description} />
+
+              })
+              }
+            </IonRow></IonGrid>
         </IonContent>
       </IonPage>
     </>

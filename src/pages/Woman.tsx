@@ -1,4 +1,4 @@
-import { IonPage, IonContent } from '@ionic/react'
+import { IonPage, IonContent, IonGrid, IonRow } from '@ionic/react'
 import React, { useContext } from 'react'
 import Menu from '../components/Menu'
 import ProductCard from '../components/productCard'
@@ -14,10 +14,14 @@ const Woman: React.FC = () => {
                 <IonPage id='main-content'>
                     <Toolbar text={"Women's clothing"} />
                     <IonContent fullscreen>
-                        {woman.map((product, index) => {
-                            return <ProductCard key={index} title={product.title} image={product.image} price={product.price} id={product.id} category={product.category} description={product.description} />
-                        })
-                        }
+                        <IonGrid className='mb-1'>
+                            <IonRow>
+                                {woman.map((product, index) => {
+                                    return <ProductCard key={index} title={product.title} image={product.image} price={product.price} id={product.id} category={product.category} description={product.description} />
+                                })
+                                }
+                            </IonRow>
+                        </IonGrid>
                     </IonContent>
                 </IonPage>
             </>

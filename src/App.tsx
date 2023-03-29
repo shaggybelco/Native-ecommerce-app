@@ -40,6 +40,7 @@ import { useState, useEffect } from 'react';
 import { IProduct } from './Interface/IProduct';
 import { getProducts } from './services/Products';
 import Woman from './pages/Woman';
+import Login from './pages/Login';
 
 setupIonicReact();
 
@@ -93,6 +94,9 @@ const App: React.FC = () => {
               </Route>
               <Route exact path="/">
                 <Redirect to="/home" />
+              </Route>
+              <Route exact path="/login">
+                <Login/>
               </Route>
             </IonRouterOutlet>
           

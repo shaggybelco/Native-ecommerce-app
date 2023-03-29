@@ -1,5 +1,5 @@
 import { IonButton, IonIcon } from '@ionic/react';
-import { chevronBack, chevronForward } from 'ionicons/icons';
+import { bagAddOutline, chevronBack, chevronForward } from 'ionicons/icons';
 import React, { useState } from 'react';
 import { IProduct } from '../Interface/IProduct';
 
@@ -21,13 +21,16 @@ const Carousel: React.FC<CarouselProps> = ({ products }) => {
     };
 
     return (
-        <div style={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <div style={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <img src={products[currentSlide]?.image} alt={`Slide ${currentSlide}`} style={{ width: 'auto', height: '200px', objectFit: 'cover' }} />
             <IonButton onClick={handlePrev} style={{ position: 'absolute', top: '50%', left: 0, transform: 'translateY(-50%)', zIndex: 1 }}>
-               <IonIcon icon={chevronBack}/>
+                <IonIcon icon={chevronBack} />
             </IonButton>
             <IonButton onClick={handleNext} style={{ position: 'absolute', top: '50%', right: 0, transform: 'translateY(-50%)', zIndex: 1 }}>
-                <IonIcon icon={chevronForward}/>
+                <IonIcon icon={chevronForward} />
+            </IonButton>
+            <IonButton style={{ position: 'absolute', top: '90%', right: '40%', transform: 'translateY(-50%)', zIndex: 1 }}>
+                <IonIcon icon={bagAddOutline} />
             </IonButton>
         </div>
     );
