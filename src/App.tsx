@@ -42,6 +42,13 @@ import { getProducts } from './services/Products';
 import Woman from './pages/Woman';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import { AuthContext } from './context/auth.context';
+import Cart from './pages/cart';
+import { LoginUser } from './services/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, logout } from './services/auth.redux';
+import { RootState } from './store/store';
+import Profile from './pages/profile';
 
 setupIonicReact();
 
@@ -51,84 +58,143 @@ const App: React.FC = () => {
   const [man, setMan] = useState<IProduct[]>([]);
   const [woman, setWoman] = useState<IProduct[]>([]);
 
+  const [user, setUser] = useState<any | null>(null);
+
+  const dispatch = useDispatch();
+  const signIn = async (data: any) => {
+
+
+    const userLogin = await LoginUser({ identifier: data.identifier, password: data.password });
+
+    dispatch(login(userLogin.data.token));
+    setUser(userLogin.data);
+    console.log(userLogin.data);
+  };
+
+  const signOut = async () => {
+    dispatch(logout());
+  };
+
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.isAuthenticated
+  );
+
+  console.log(isAuthenticated);
+
+
+
+
+
   useEffect(() => {
-      getProducts('electronics').then((products) => {
-          console.log(products);
-          setElectronics(products);
-      });
+    getProducts('electronics').then((products) => {
+      console.log(products);
+      setElectronics(products);
+    });
 
-      getProducts('jewelery').then((products) => {
-          console.log(products);
-          setJewelery(products);
-      });
+    getProducts('jewelery').then((products) => {
+      console.log(products);
+      setJewelery(products);
+    });
 
-      getProducts("men's clothing").then((products) => {
-          console.log(products);
-          setMan(products);
-      });
+    getProducts("men's clothing").then((products) => {
+      console.log(products);
+      setMan(products);
+    });
 
-      getProducts("women's clothing").then((products) => {
-          console.log(products);
-          setWoman(products);
-      });
+    getProducts("women's clothing").then((products) => {
+      console.log(products);
+      setWoman(products);
+    });
+
+    if (localStorage.getItem('user')) {
+      const userL = localStorage.getItem('user');
+      setUser(JSON.parse(userL!));
+    }
+
+
+
   }, []);
+
+
   return (
     <IonApp>
-      <MyContext.Provider value={{electronics, jewelery, man, woman, setElectronics, setJewelery, setMan, setWoman}}>
-      <IonReactRouter>
-        <IonTabs>
-            <IonRouterOutlet>
-              <Route exact path="/electronics">
-                <Electronics />
-              </Route>
-              <Route exact path="/jewelery">
-                <Jewelery />
-              </Route>
-              <Route path="/man">
-                <Man />
-              </Route>
-              <Route path="/woman">
-                <Woman />
-              </Route>
-              <Route path="/home">
-                <Home />
-              </Route>
-              <Route exact path="/">
-                <Redirect to="/home" />
-              </Route>
-              <Route exact path="/login">
-                <Login/>
-              </Route>
+      <MyContext.Provider value={{ electronics, jewelery, man, woman, setElectronics, setJewelery, setMan, setWoman }}>
+        <AuthContext.Provider value={{ user, signIn, signOut }}>
 
-              <Route exact path="/register">
-                <Register/>
-              </Route>
-            </IonRouterOutlet>
-          
-          <IonTabBar slot="bottom">
-            <IonTabButton tab="Home" href="/home">
-              <IonIcon aria-hidden="true" icon={homeOutline} />
-              <IonLabel>Home</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="Electronics" href="/electronics">
-              <IonIcon aria-hidden="true" icon={tvOutline} />
-              <IonLabel>Electronics</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="Jewelery" href="/jewelery">
-              <IonIcon aria-hidden="true" icon={diamondOutline} />
-              <IonLabel>Jewelery</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="Man" href="/man">
-              <IonIcon aria-hidden="true" icon={manOutline} />
-              <IonLabel>Men's</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="Woman" href="/woman">
-              <IonIcon aria-hidden="true" icon={womanOutline} />
-              <IonLabel>Women's</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
-      </IonReactRouter>
+          <IonReactRouter>
+            <IonTabs>
+              <IonRouterOutlet>
+                <Route exact path="/electronics">
+                  <Electronics />
+                </Route>
+                <Route exact path="/jewelery">
+                  <Jewelery />
+                </Route>
+                <Route path="/man">
+                  <Man />
+                </Route>
+                <Route path="/woman">
+                  <Woman />
+                </Route>
+                <Route path="/home">
+                  <Home />
+                </Route>
+                <Route exact path="/">
+                  <Redirect to="/home" />
+                </Route>
+                <Route exact path="/login">
+                  <Login />
+                </Route>
+                <Route exact path="/register">
+                  <Register />
+                </Route>
+
+                {
+                  isAuthenticated ?
+                    <Route exact path='/profile'>
+                      <Profile />
+                    </Route>
+                    : <Route><Redirect to={'/login'} /></Route>
+                }
+
+                {
+                  isAuthenticated ?
+                    <Route exact path='/cart'>
+                      <Cart />
+                    </Route>
+                    : <Route><Redirect to={'/login'} /></Route>
+                }
+
+
+
+
+              </IonRouterOutlet>
+
+              <IonTabBar slot="bottom">
+                <IonTabButton tab="Home" href="/home">
+                  <IonIcon aria-hidden="true" icon={homeOutline} />
+                  <IonLabel>Home</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="Electronics" href="/electronics">
+                  <IonIcon aria-hidden="true" icon={tvOutline} />
+                  <IonLabel>Electronics</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="Jewelery" href="/jewelery">
+                  <IonIcon aria-hidden="true" icon={diamondOutline} />
+                  <IonLabel>Jewelery</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="Man" href="/man">
+                  <IonIcon aria-hidden="true" icon={manOutline} />
+                  <IonLabel>Men's</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="Woman" href="/woman">
+                  <IonIcon aria-hidden="true" icon={womanOutline} />
+                  <IonLabel>Women's</IonLabel>
+                </IonTabButton>
+              </IonTabBar>
+            </IonTabs>
+          </IonReactRouter>
+        </AuthContext.Provider>
       </MyContext.Provider>
     </IonApp>
   );

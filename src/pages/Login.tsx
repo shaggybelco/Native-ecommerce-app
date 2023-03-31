@@ -1,7 +1,9 @@
-import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonInput, IonItem, IonIcon, IonButton } from '@ionic/react'
+import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonInput, IonItem, IonIcon, IonButton, IonText } from '@ionic/react'
 import { lockClosedOutline, personOutline } from 'ionicons/icons'
-import React from 'react'
+import React, { useContext } from 'react'
 import { LoginUser } from '../services/auth';
+import { useHistory } from 'react-router';
+import { AuthContext } from '../context/auth.context';
 
 const Login: React.FC = () => {
     const [email, setEmail] = React.useState('')
@@ -9,15 +11,19 @@ const Login: React.FC = () => {
     const [error, setError] = React.useState('')
     const [loading, setLoading] = React.useState(false);
 
+    const route = useHistory();
+
+    let { user, signIn } = useContext(AuthContext);
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
         setError('')
         setLoading(true)
 
-        const user = await LoginUser({username: email, password: password});
 
-        console.log(user)
+        await signIn({ identifier: email, password: password });
+
+        console.log(user);
     }
     return (
         <div className='flex h-full w-full justify-center align-center'>
@@ -37,15 +43,11 @@ const Login: React.FC = () => {
                         <IonInput placeholder="Password" type='password' value={password} onIonChange={(e: any) => setPassword(e.target.value)}></IonInput>
                     </IonItem>
 
-                    <IonButton className='mt-1 mb-1' expand='block' onClick={(e: any) => handleSubmit(e)}>
+                    <IonButton className='mt-1 mb-1' expand='block' onClick={handleSubmit}>
                         Login
                     </IonButton>
 
-                    <h1 style={{ textAlign: 'center' }}>OR</h1>
-
-                    <IonButton className='mt-1' expand='block'>
-                        Register
-                    </IonButton>
+                    <IonText>Don't have an account? <a onClick={() => { route.push('/register') }}>register.</a> </IonText>
 
                 </IonCardContent>
             </IonCard>

@@ -1,34 +1,14 @@
-import { IProduct } from "../Interface/IProduct";
-import axios, { AxiosResponse } from "axios";
-import db from '../database/database';
+import axios from "axios";
+import { serverURL } from "../constant/constant";
 
 export async function LoginUser(data: any) {
-    console.log(data);
-    
-  try {
-    const response: AxiosResponse<any> = await axios.post(
-      `https://fakestoreapi.com/auth/login`,
-      {
-        data,
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
+  console.log(data);
+
+  return axios.post(`${serverURL}/login`, data);
 }
 
 export async function RegisterUser(data: any) {
-    console.log(data);
-    
-  try {
-    const response: AxiosResponse<any> = await axios.post(
-      `https://fakestoreapi.com/users`,
-      {
-        data,
-      }
-    );
-    return response.data;
-  }catch (error) {}
+  console.log(data);
+
+  return axios.post(`${serverURL}/register`, data);
 }

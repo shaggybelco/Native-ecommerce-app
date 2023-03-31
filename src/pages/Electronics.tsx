@@ -1,4 +1,4 @@
-import { IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import { useContext } from 'react';
 import Menu from '../components/Menu';
 import ProductCard from '../components/productCard';
