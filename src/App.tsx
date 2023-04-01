@@ -46,7 +46,7 @@ import { AuthContext } from './context/auth.context';
 import Cart from './pages/cart';
 import { LoginUser, RegisterUser } from './services/auth';
 import { useDispatch, useSelector } from 'react-redux';
-import { setToken, setUser, logOut } from './actions/auth';
+import { setToken, setUser, logOut } from './actions/action';
 import Profile from './pages/profile';
 import { AuthState } from './Interface/authState';
 
@@ -58,35 +58,9 @@ const App: React.FC = () => {
   const [man, setMan] = useState<IProduct[]>([]);
   const [woman, setWoman] = useState<IProduct[]>([]);
 
-  // const [users, setUser] = useState<any | null>(null);
-
-
-  const dispatch = useDispatch();
-
   const {user, isAuthenticated } = useSelector<AuthState, AuthState>((state) => state);
 
-  const signIn = async (data: any) => {
-
-
-    const userLogin = await LoginUser({ identifier: data.identifier, password: data.password });
-
-    dispatch(setToken(userLogin.data.token));
-    dispatch(setUser(userLogin.data.user, userLogin.data.token))
-  };
-
-  const signOut = async () => {
-    dispatch(logOut());
-  };
-
-  const signUp = async (data: any) => {
-    const userReg = await RegisterUser(data);
-
-    console.log(data);
-    if (userReg.status === 200) {
-      signIn({ identifier: data.email, password: data.password });
-    }
-  };
-
+  console.log(isAuthenticated, user)
   useEffect(() => {
     getProducts('electronics').then((products) => {
       console.log(products);
@@ -114,8 +88,6 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <MyContext.Provider value={{ electronics, jewelery, man, woman, setElectronics, setJewelery, setMan, setWoman }}>
-        <AuthContext.Provider value={{ user, signIn, signOut, signUp }}>
-
           <IonReactRouter>
             <IonTabs>
               <IonRouterOutlet>
@@ -198,7 +170,6 @@ const App: React.FC = () => {
               </IonTabBar>
             </IonTabs>
           </IonReactRouter>
-        </AuthContext.Provider>
       </MyContext.Provider>
     </IonApp>
   );

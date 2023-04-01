@@ -5,4 +5,4 @@ export type AuthActionTypes =
   | { type: "LOGIN_FAILURE"; payload: string }
   | { type: "LOGOUT" }
   | { type: "SET_TOKEN"; payload: string }
-  | { type: "REMOVE_TOKEN" };
+  | { type: "REMOVE_TOKEN" } 

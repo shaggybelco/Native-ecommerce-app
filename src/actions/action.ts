@@ -17,4 +17,9 @@ export const setToken = (token: string): AuthActionTypes => ({
   
   export const logOut = (): AuthActionTypes => ({
     type: 'LOGOUT',
-  })
+  });
+
+  export const loginFailed = (message: string): AuthActionTypes => ({
+    type: 'LOGIN_FAILURE',
+    payload: message
+  });

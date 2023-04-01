@@ -1,14 +1,18 @@
 import { IonButton, IonButtons, IonHeader, IonIcon, IonMenuButton, IonTitle, IonToolbar } from '@ionic/react'
 import { cartOutline, logOutOutline, personOutline } from 'ionicons/icons'
-import React, { useContext } from 'react';
-import { AuthContext } from '../context/auth.context';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { logOut } from '../actions/action';
 
 interface Title{
     text: string;
 }
 const Toolbar: React.FC<Title> = ({text})=> {
-    const {signOut} = useContext(AuthContext)
+    const dispatch = useDispatch();
 
+    function LogOut(): void {
+        dispatch(logOut())
+    }
     return (
         <div> 
             <IonHeader>
@@ -23,7 +27,7 @@ const Toolbar: React.FC<Title> = ({text})=> {
                         <IonButton onClick={()=>window.location.replace('/profile')}>
                             <IonIcon icon={personOutline} />
                         </IonButton>
-                        <IonButton onClick={signOut}>
+                        <IonButton onClick={()=>LogOut()}>
                             <IonIcon icon={logOutOutline} />
                         </IonButton>
                     </IonButtons>

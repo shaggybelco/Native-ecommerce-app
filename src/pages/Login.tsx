@@ -1,31 +1,28 @@
 import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonInput, IonItem, IonIcon, IonButton, IonText } from '@ionic/react'
 import { lockClosedOutline, personOutline } from 'ionicons/icons'
-import React, { useContext, useEffect } from 'react'
-import { AuthContext } from '../context/auth.context';
-import { useSelector } from 'react-redux';
-import { AuthState } from '../Interface/authState';
+import React, {  } from 'react'
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { login } from '../actions/auth.action';
+import { ThunkDispatch } from '@reduxjs/toolkit';
+import { AnyAction } from 'redux';
 
 const Login: React.FC = () => {
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
 
-    let { signIn } = useContext(AuthContext);
-    const {isAuthenticated } = useSelector<AuthState, AuthState>((state) => state);
+    const dispatch: ThunkDispatch<{}, {}, AnyAction> = useDispatch();
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
 
-        await signIn({ identifier: email, password: password });
-    }
-
-    useEffect(()=>{
-        if(isAuthenticated){
-            window.location.replace('/cart')
+        const user = {
+            email: email,
+            password: password
         }
-    
-        console.log(isAuthenticated);
-      },[isAuthenticated])
+
+        dispatch(login(user));
+    }
 
     return (
         <div className='flex h-full w-full justify-center align-center'>
@@ -37,12 +34,12 @@ const Login: React.FC = () => {
                 <IonCardContent>
                     <IonItem>
                         <IonIcon slot='start' icon={personOutline} />
-                        <IonInput placeholder="Username" type='email' value={email} onIonChange={(e: any) => setEmail(e.target.value)}></IonInput>
+                        <IonInput required placeholder="Username" type='email' value={email} onIonChange={(e: any) => setEmail(e.target.value)}></IonInput>
                     </IonItem>
 
                     <IonItem>
                         <IonIcon slot='start' icon={lockClosedOutline} />
-                        <IonInput placeholder="Password" type='password' value={password} onIonChange={(e: any) => setPassword(e.target.value)}></IonInput>
+                        <IonInput required placeholder="Password" type='password' value={password} onIonChange={(e: any) => setPassword(e.target.value)}></IonInput>
                     </IonItem>
 
                     <IonButton className='mt-1 mb-1' expand='block' onClick={handleSubmit}>
