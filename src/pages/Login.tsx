@@ -1,30 +1,32 @@
 import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonInput, IonItem, IonIcon, IonButton, IonText } from '@ionic/react'
 import { lockClosedOutline, personOutline } from 'ionicons/icons'
-import React, { useContext } from 'react'
-import { LoginUser } from '../services/auth';
-import { useHistory } from 'react-router';
+import React, { useContext, useEffect } from 'react'
 import { AuthContext } from '../context/auth.context';
+import { useSelector } from 'react-redux';
+import { AuthState } from '../Interface/authState';
+import { Link } from 'react-router-dom';
 
 const Login: React.FC = () => {
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
-    const [error, setError] = React.useState('')
-    const [loading, setLoading] = React.useState(false);
 
-    const route = useHistory();
-
-    let { user, signIn } = useContext(AuthContext);
+    let { signIn } = useContext(AuthContext);
+    const {isAuthenticated } = useSelector<AuthState, AuthState>((state) => state);
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
-        setError('')
-        setLoading(true)
-
 
         await signIn({ identifier: email, password: password });
-
-        console.log(user);
     }
+
+    useEffect(()=>{
+        if(isAuthenticated){
+            window.location.replace('/cart')
+        }
+    
+        console.log(isAuthenticated);
+      },[isAuthenticated])
+
     return (
         <div className='flex h-full w-full justify-center align-center'>
             <IonCard>
@@ -47,7 +49,7 @@ const Login: React.FC = () => {
                         Login
                     </IonButton>
 
-                    <IonText>Don't have an account? <a onClick={() => { route.push('/register') }}>register.</a> </IonText>
+                    <IonText>Don't have an account? <Link to={'/register'}>register.</Link> </IonText>
 
                 </IonCardContent>
             </IonCard>

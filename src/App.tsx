@@ -44,11 +44,11 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import { AuthContext } from './context/auth.context';
 import Cart from './pages/cart';
-import { LoginUser } from './services/auth';
+import { LoginUser, RegisterUser } from './services/auth';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, logout } from './services/auth.redux';
-import { RootState } from './store/store';
+import { setToken, setUser, logOut } from './actions/auth';
 import Profile from './pages/profile';
+import { AuthState } from './Interface/authState';
 
 setupIonicReact();
 
@@ -58,32 +58,34 @@ const App: React.FC = () => {
   const [man, setMan] = useState<IProduct[]>([]);
   const [woman, setWoman] = useState<IProduct[]>([]);
 
-  const [user, setUser] = useState<any | null>(null);
+  // const [users, setUser] = useState<any | null>(null);
+
 
   const dispatch = useDispatch();
+
+  const {user, isAuthenticated } = useSelector<AuthState, AuthState>((state) => state);
+
   const signIn = async (data: any) => {
 
 
     const userLogin = await LoginUser({ identifier: data.identifier, password: data.password });
 
-    dispatch(login(userLogin.data.token));
-    setUser(userLogin.data);
-    console.log(userLogin.data);
+    dispatch(setToken(userLogin.data.token));
+    dispatch(setUser(userLogin.data.user, userLogin.data.token))
   };
 
   const signOut = async () => {
-    dispatch(logout());
+    dispatch(logOut());
   };
 
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.isAuthenticated
-  );
+  const signUp = async (data: any) => {
+    const userReg = await RegisterUser(data);
 
-  console.log(isAuthenticated);
-
-
-
-
+    console.log(data);
+    if (userReg.status === 200) {
+      signIn({ identifier: data.email, password: data.password });
+    }
+  };
 
   useEffect(() => {
     getProducts('electronics').then((products) => {
@@ -106,20 +108,13 @@ const App: React.FC = () => {
       setWoman(products);
     });
 
-    if (localStorage.getItem('user')) {
-      const userL = localStorage.getItem('user');
-      setUser(JSON.parse(userL!));
-    }
-
-
-
   }, []);
 
 
   return (
     <IonApp>
       <MyContext.Provider value={{ electronics, jewelery, man, woman, setElectronics, setJewelery, setMan, setWoman }}>
-        <AuthContext.Provider value={{ user, signIn, signOut }}>
+        <AuthContext.Provider value={{ user, signIn, signOut, signUp }}>
 
           <IonReactRouter>
             <IonTabs>
@@ -149,7 +144,20 @@ const App: React.FC = () => {
                   <Register />
                 </Route>
 
-                {
+                <Route
+                  exact path="/profile"
+                  render={() =>
+                    isAuthenticated ? <Profile /> : <Login/>
+                  }
+                />
+
+                <Route
+                  exact path="/cart"
+                  render={() =>
+                    isAuthenticated ? <Cart /> : <Login/>
+                  }
+                />
+                {/* {
                   isAuthenticated ?
                     <Route exact path='/profile'>
                       <Profile />
@@ -163,11 +171,7 @@ const App: React.FC = () => {
                       <Cart />
                     </Route>
                     : <Route><Redirect to={'/login'} /></Route>
-                }
-
-
-
-
+                } */}
               </IonRouterOutlet>
 
               <IonTabBar slot="bottom">

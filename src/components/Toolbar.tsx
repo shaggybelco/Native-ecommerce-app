@@ -17,10 +17,10 @@ const Toolbar: React.FC<Title> = ({text})=> {
                         <IonMenuButton></IonMenuButton>
                     </IonButtons>
                     <IonButtons slot="end">
-                        <IonButton href='/cart'>
+                        <IonButton onClick={()=>window.location.replace('/cart')}>
                             <IonIcon icon={cartOutline} />
                         </IonButton>
-                        <IonButton  href='/profile'>
+                        <IonButton onClick={()=>window.location.replace('/profile')}>
                             <IonIcon icon={personOutline} />
                         </IonButton>
                         <IonButton onClick={signOut}>

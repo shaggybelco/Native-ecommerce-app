@@ -1,8 +1,8 @@
 import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonItem, IonIcon, IonInput, IonButton, IonText } from '@ionic/react'
 import { personOutline, lockClosedOutline, mailOutline, homeOutline, businessOutline, trailSignOutline, pinOutline } from 'ionicons/icons'
-import React from 'react'
-import { useHistory } from 'react-router';
-import { RegisterUser } from '../services/auth';
+import React, { useContext } from 'react'
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/auth.context';
 
 const Register: React.FC = () => {
     const [email, setEmail] = React.useState('')
@@ -13,15 +13,11 @@ const Register: React.FC = () => {
     const [city, setCity] = React.useState('');
     const [state, setState] = React.useState('');
     const [zip, setZip] = React.useState('');
-    const [error, setError] = React.useState('')
-    const [loading, setLoading] = React.useState(false);
 
-    const history = useHistory();
+    const {signUp} = useContext(AuthContext);
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
-        setError('')
-        setLoading(true)
 
         const userData = {
             email: email,
@@ -34,7 +30,7 @@ const Register: React.FC = () => {
             zip: zip
         }
 
-        const user = await RegisterUser(userData);
+        const user = await signUp(userData);
 
         console.log(user)
     }
@@ -91,7 +87,7 @@ const Register: React.FC = () => {
                         Register
                     </IonButton>
 
-                    <IonText>Have an account? <a onClick={() => { history.push('/login') }}>login.</a> </IonText>
+                    <IonText>Have an account? <Link to={'/login'}>login.</Link> </IonText>
 
                 </IonCardContent>
             </IonCard>
