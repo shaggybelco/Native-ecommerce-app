@@ -4,7 +4,6 @@ import Menu from '../components/Menu';
 import ProductCard from '../components/productCard';
 import Toolbar from '../components/Toolbar';
 import { MyContext } from '../context/data.context';
-import './Electronics.css';
 
 const Electronics: React.FC = () => {
   const { electronics } = useContext(MyContext)
