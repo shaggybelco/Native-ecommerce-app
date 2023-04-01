@@ -1,17 +1,23 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, REHYDRATE, FLUSH, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 import authReducer from '../reducers/auth.reducer';
+import cartReducer from '../reducers/cart.reducer';
 
 const persistConfig = {
   key: 'root',
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, authReducer);
+const rootReducer = combineReducers({
+  auth: authReducer,
+  cart: persistReducer({ key: 'cart', storage }, cartReducer),
+});
 
-export const store = configureStore({
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const authStore = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -21,6 +27,6 @@ export const store = configureStore({
     }),
 });
 
-export const persistor = persistStore(store);
-export type AppDispatch = typeof store.dispatch;
+export const persistor = persistStore(authStore);
+export type AppDispatch = typeof authStore.dispatch;
 

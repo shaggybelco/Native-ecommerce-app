@@ -1,0 +1,17 @@
+.cart_item{
+    box-shadow: 0 0 10px 0 #00003254;
+    display: flex;
+    margin-bottom: 1rem;
+    width: 100%;
+    .cart_img_holder{
+        max-width: 30%;
+        margin-right: 10px;
+        .cart_img{
+            width: 100%;
+        }
+    }
+
+    .cart_content{
+        width: 100%;
+    }
+}

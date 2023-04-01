@@ -6,5 +6,7 @@ export interface IProduct {
     description:string;
     rating?: any;
     image:string;
+    quantity?:number;
+    addedPrice?:number;
     [key: number]: string;
 }

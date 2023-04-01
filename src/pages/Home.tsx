@@ -10,15 +10,13 @@ import Toolbar from '../components/Toolbar';
 import Menu from '../components/Menu';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { AuthState } from '../Interface/authState';
+import { RootState } from '../Interface/rootState';
 
 const Home: React.FC = () => {
     const { electronics, jewelery, man, woman } = useContext(MyContext)
     const navigation = useHistory();
 
-    const { user, isAuthenticated } = useSelector<AuthState, AuthState>((state) => state);
-
-
+    const {isAuthenticated, user } = useSelector((state: RootState) => state.auth);
 
     return (
         <>

@@ -17,7 +17,7 @@ const Woman: React.FC = () => {
                         <IonGrid className='mb-1'>
                             <IonRow>
                                 {woman.map((product, index) => {
-                                    return <ProductCard key={index} title={product.title} image={product.image} price={product.price} id={product.id} category={product.category} description={product.description} />
+                                    return <ProductCard key={index} product={product} />
                                 })
                                 }
                             </IonRow>

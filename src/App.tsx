@@ -47,6 +47,8 @@ import { useSelector } from 'react-redux';
 import Profile from './pages/profile';
 import { AuthState } from './Interface/authState';
 import Category from './components/categories';
+import { RootState } from './Interface/rootState';
+import { CartProvider } from './context/addToCart.context';
 
 setupIonicReact();
 
@@ -56,28 +58,23 @@ const App: React.FC = () => {
   const [man, setMan] = useState<IProduct[]>([]);
   const [woman, setWoman] = useState<IProduct[]>([]);
 
-  const { user, isAuthenticated } = useSelector<AuthState, AuthState>((state) => state);
+  const {isAuthenticated } = useSelector((state: RootState) => state.auth);
 
-  console.log(isAuthenticated, user);
-
+  
   useEffect(() => {
     getProducts('electronics').then((products) => {
-      console.log(products);
       setElectronics(products);
     });
 
     getProducts('jewelery').then((products) => {
-      console.log(products);
       setJewelery(products);
     });
 
     getProducts("men's clothing").then((products) => {
-      console.log(products);
       setMan(products);
     });
 
     getProducts("women's clothing").then((products) => {
-      console.log(products);
       setWoman(products);
     });
 
@@ -87,69 +84,71 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <MyContext.Provider value={{ electronics, jewelery, man, woman, setElectronics, setJewelery, setMan, setWoman }}>
-        <IonReactRouter>
-          <IonTabs>
-            <IonRouterOutlet>
-              <Route exact path="/electronics">
-                <Electronics />
-              </Route>
-              <Route exact path="/jewelery">
-                <Jewelery />
-              </Route>
-              <Route path="/man">
-                <Man />
-              </Route>
-              <Route path="/woman">
-                <Woman />
-              </Route>
-              <Route path="/home">
-                <Home />
-              </Route>
-              <Route exact path="/">
-                <Redirect to="/home" />
-              </Route>
-              <Route exact path="/login">
-                <Login />
-              </Route>
-              <Route exact path="/register">
-                <Register />
-              </Route>
+        <CartProvider>
+          <IonReactRouter>
+            <IonTabs>
+              <IonRouterOutlet>
+                <Route exact path="/electronics">
+                  <Electronics />
+                </Route>
+                <Route exact path="/jewelery">
+                  <Jewelery />
+                </Route>
+                <Route path="/man">
+                  <Man />
+                </Route>
+                <Route path="/woman">
+                  <Woman />
+                </Route>
+                <Route path="/home">
+                  <Home />
+                </Route>
+                <Route exact path="/">
+                  <Redirect to="/home" />
+                </Route>
+                <Route exact path="/login">
+                  <Login />
+                </Route>
+                <Route exact path="/register">
+                  <Register />
+                </Route>
 
-              <Route exact path="/category">
-                <Category />
-              </Route>
+                <Route exact path="/category">
+                  <Category />
+                </Route>
 
-              <Route
-                exact path="/profile"
-                render={() =>
-                  isAuthenticated ? <Profile /> : <Login />
-                }
-              />
+                <Route
+                  exact path="/profile"
+                  render={() =>
+                    isAuthenticated ? <Profile /> : <Login />
+                  }
+                />
 
-              <Route
-                exact path="/cart"
-                render={() =>
-                  isAuthenticated ? <Cart /> : <Login />
-                }
-              />
-            </IonRouterOutlet>
+                <Route
+                  exact path="/cart"
+                  render={() =>
+                    <Cart />
+                  }
+                />
+              </IonRouterOutlet>
 
-            <IonTabBar slot="bottom">
-              <IonTabButton tab="Home" href="/home">
-                <IonIcon aria-hidden="true" icon={homeOutline} />
-                <IonLabel>Home</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab='Category' href='/category'>
-                <IonIcon icon={fileTrayFullOutline} />
-                <IonLabel>Category</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab='Profile' href='/profile'>
-                <IonIcon icon={personOutline} />
-                <IonLabel>Profile</IonLabel>
-              </IonTabButton>
-            </IonTabBar>
-          </IonTabs>
-        </IonReactRouter>
+              <IonTabBar slot="bottom">
+                <IonTabButton tab="Home" href="/home">
+                  <IonIcon aria-hidden="true" icon={homeOutline} />
+                  <IonLabel>Home</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab='Category' href='/category'>
+                  <IonIcon icon={fileTrayFullOutline} />
+                  <IonLabel>Category</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab='Profile' href='/profile'>
+                  <IonIcon icon={personOutline} />
+                  <IonLabel>Profile</IonLabel>
+                </IonTabButton>
+              </IonTabBar>
+            </IonTabs>
+          </IonReactRouter>
+        </CartProvider>
       </MyContext.Provider>
     </IonApp>
   );

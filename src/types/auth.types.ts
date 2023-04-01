@@ -1,4 +1,4 @@
-import { IUser } from "./User";
+import { IUser } from "../Interface/User";
 
 export type AuthActionTypes =
   | { type: "LOGIN_SUCCESS"; payload: { user: IUser; token: string } }
