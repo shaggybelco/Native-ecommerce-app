@@ -3,7 +3,7 @@ import { trashBinOutline } from 'ionicons/icons';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { removeFromCart } from '../actions/action';
+import { addedBySelection, removeFromCart } from '../actions/action';
 import Menu from '../components/Menu';
 import Toolbar from '../components/Toolbar';
 import { IProduct } from '../Interface/IProduct';
@@ -17,6 +17,13 @@ const Cart: React.FC = () => {
 
     const removeItem = (item: IProduct) => {
         dispatch(removeFromCart(item))
+    }
+
+    const addByQuantity = (item: IProduct, quantity: number, price: string) => {
+        console.log(quantity);
+
+        dispatch(addedBySelection(item, price, quantity));
+
     }
 
     console.log(items);
@@ -36,15 +43,15 @@ const Cart: React.FC = () => {
                                     </div>
                                     <div className='cart_content'>
                                         <h5>{item.title}</h5>
-                                        <select defaultChecked defaultValue={item?.quantity}>
+                                        <select onChange={(e) => { addByQuantity(item, parseInt(e.target.value), item.price) }} defaultChecked defaultValue={item.quantity} value={item.quantity}>
                                             <option disabled>Quantity</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                            <option value={1}>1</option>
+                                            <option value={2}>2</option>
+                                            <option value={3}>3</option>
+                                            <option value={4}>4</option>
+                                            <option value={5}>5</option>
                                         </select>
-                                        <IonButton onClick={()=>removeItem(item)}>
+                                        <IonButton onClick={() => removeItem(item)}>
                                             <IonIcon icon={trashBinOutline} />
                                         </IonButton>
 

@@ -1,6 +1,8 @@
 import { IonButton, IonIcon } from '@ionic/react';
 import { bagAddOutline, chevronBack, chevronForward } from 'ionicons/icons';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../actions/action';
 import { IProduct } from '../Interface/IProduct';
 
 interface CarouselProps {
@@ -20,6 +22,13 @@ const Carousel: React.FC<CarouselProps> = ({ products }) => {
         setCurrentSlide(prevSlide < 0 ? products.length - 1 : prevSlide);
     };
 
+    const dispatch = useDispatch();
+
+    function handleAddToCart(item: IProduct) {
+        dispatch(addToCart(item));
+        console.log('Added')
+    }
+    
     return (
         <div style={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <img src={products[currentSlide]?.image} alt={`Slide ${currentSlide}`} style={{ width: 'auto', height: '200px', objectFit: 'cover' }} />
@@ -29,7 +38,7 @@ const Carousel: React.FC<CarouselProps> = ({ products }) => {
             <IonButton fill='clear' onClick={handleNext} style={{ position: 'absolute', top: '50%', right: 0, transform: 'translateY(-50%)', zIndex: 1 }}>
                 <IonIcon icon={chevronForward} />
             </IonButton>
-            <IonButton fill='clear' style={{ position: 'absolute', top: '0%', right: '0%', transform: 'translateY(-50%)', zIndex: 1 }}>
+            <IonButton onClick={()=>handleAddToCart(products[currentSlide])} fill='clear' style={{ position: 'absolute', top: '0%', right: '0%', transform: 'translateY(-50%)', zIndex: 1 }}>
                 <IonIcon icon={bagAddOutline} />
             </IonButton>
         </div>
